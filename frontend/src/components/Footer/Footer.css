@@ -1,0 +1,66 @@
+.footer {
+  background-color: #232f3e;
+  color: white;
+  font-family: 'Amazon Ember', Arial, sans-serif;
+  padding: 0;
+  font-size: 14px;
+}
+
+.backToTop {
+  background-color: #37475a;
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 700;
+  user-select: none;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.backToTop:hover {
+  background-color: #485769;
+}
+
+.footerLinksContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 30px;
+  padding: 10px 200px 10px 200px;
+}
+
+.footerLinksGroup {
+  flex: 1 1 180px;
+  min-width: 150px;
+}
+
+.footerLinksGroup h4 {
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.footerLinksGroup ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerLinksGroup ul li {
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.footerLinksGroup ul li:hover {
+  text-decoration: underline;
+}
+
+.footerBottom {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #3a4553;
+  padding-top: 10px;
+}

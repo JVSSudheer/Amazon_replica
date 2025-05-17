@@ -1,0 +1,130 @@
+.navbar {
+  height: 60px;
+  background-color: #131921;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-family: 'Amazon Ember', Arial, sans-serif;
+  gap: 15px;
+}
+
+.logoContainer {
+  flex: 0 0 100px;
+}
+
+.logo {
+  width: 100px;
+  object-fit: contain;
+}
+
+.location {
+  flex: 0 0 120px;
+  font-size: 14px;
+  line-height: 1.1;
+}
+
+.location span {
+  color: #ccc;
+}
+
+.location strong {
+  color: white;
+}
+
+.searchContainer {
+  flex: 1 1 auto;
+  display: flex;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.categorySelect {
+  background-color: #f3f3f3;
+  border: rgb(224, 217, 217) 1px solid;
+  padding: 0 10px;
+  font-size: 14px;
+  color: #111;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  outline: none;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.searchButton {
+  background-color: #febd69;
+  border: none;
+  padding: 0 16px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.navLinks {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.navItem {
+  cursor: pointer;
+  /* user-select: none; */
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.cart {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.cartCount {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  background-color: #f08804;
+  color: black;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cartText {
+  margin-left: 5px;
+  color: white;
+  font-weight: 700;
+}
+
+.dropdownOptions {
+  position: absolute;
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; 
+  margin-top: 5px;
+  padding: 10px;
+  width: 150px; 
+}
+.dropdownOptions div {
+  padding: 8px 10px;
+  cursor: pointer;
+}
+.dropdownOptions div:hover {
+  background-color: #f0f0f0; 
+}
