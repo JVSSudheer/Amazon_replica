@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './Login.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../../../services/authServices';
+import { useAuth } from '../../../context/AuthContext';
+import { toast } from 'react-toastify';
 
 interface FormData {
   email: string;
@@ -15,6 +18,8 @@ interface Errors {
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
   const [errors, setErrors] = useState<Errors>({});
+  const navigate = useNavigate();
+  const {refetchUser}= useAuth();
 
   const validateEmail = (email: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -36,12 +41,19 @@ const Login: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validate()) {
-      alert('Login successful!');
-      setFormData({ email: '', password: '' });
-      setErrors({});
+      try{
+        const response= await login(formData.email, formData.password);
+        localStorage.setItem("token", response.body.token);
+        refetchUser();
+        toast.success("Login successful");
+          navigate('/');
+        console.log("Login successful");
+      }catch(err){
+        console.error("Login failed:", err);
+      }
     }
   };
 

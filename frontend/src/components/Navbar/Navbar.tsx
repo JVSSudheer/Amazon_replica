@@ -1,12 +1,28 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import amazon_logo from "../../assets/amazon_logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import api from "../../services/api";
+import { toast } from "react-toastify";
 
 const Navbar: React.FC = () => {
 
-  const [isSignedIn, setIsSignedIn] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const {user} =useAuth();
+  const navigate=useNavigate();
+
+  const logout = async () => {
+    const response= await api.post("/auth/logout",{withCredentials:true});
+    if (response.status === 200) {
+      console.log("Logout successful");
+      localStorage.removeItem("token");
+      toast.success("Logout successful");
+      navigate("/login");
+    } else {
+      console.error("Logout failed");
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -44,14 +60,14 @@ const Navbar: React.FC = () => {
           onMouseEnter={() => setShowOptions(true)}
           onMouseLeave={() => setShowOptions(true)}
         >
-          <span>Hello, {isSignedIn ? "User " : "Sign in"}</span>
+          <span>Hello, {user.email ? `${user.name}` : "Sign in"}</span>
           <br />
           <strong>Account & Lists ▾</strong>
           {showOptions && (
             <div className="dropdownOptions">
-              {isSignedIn ? (
+              {user.email ? (
                 <>
-                  <div className="logout_link">Sign Out</div>
+                  <div className="logout_link" onClick={()=>logout()}>Sign Out</div>
                   <div className="account_link">Your Account</div>
                 </>
               ) : (

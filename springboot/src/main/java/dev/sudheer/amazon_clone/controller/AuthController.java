@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.sudheer.amazon_clone.dto.request.LoginRequest;
 import dev.sudheer.amazon_clone.dto.request.RegisterRequest;
-import dev.sudheer.amazon_clone.dto.response.JwtResponse;
 import dev.sudheer.amazon_clone.service.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/auth/")
@@ -19,14 +19,19 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<JwtResponse> registerUser(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(authService.registerUser(request));
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request, HttpServletResponse response){
+        return ResponseEntity.ok(authService.registerUser(request,response));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> loginUser(@RequestBody LoginRequest request){
-        authService.loginUser(request);
-        return ResponseEntity.ok(authService.loginUser(request));
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest request, HttpServletResponse response){
+        authService.loginUser(request, response);
+        return ResponseEntity.ok(authService.loginUser(request, response));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(HttpServletResponse response) {
+        return ResponseEntity.ok(authService.logoutUser(response));
     }
     
 }
