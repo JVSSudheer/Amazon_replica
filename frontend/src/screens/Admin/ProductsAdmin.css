@@ -1,0 +1,269 @@
+.admin-container {
+  font-family: 'Amazon Ember', Arial, sans-serif;
+  min-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #333;
+}
+
+.admin-container h1 {
+  color: #232f3e;
+  border-bottom: 2px solid #ff9900;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-content {
+  display: flex;
+  gap: 30px;
+}
+
+.product-form {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-list {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.image-preview {
+  max-width: 100px;
+  max-height: 100px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.attributes-section {
+  margin: 20px 0;
+}
+
+.add-attribute-btn {
+  background: #f0f2f2;
+  border: 1px solid #d5d9d9;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.add-attribute-btn:hover {
+  background: #e3e6e6;
+}
+
+.attribute-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.attribute-row input {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.remove-attribute-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.remove-attribute-btn:hover {
+  background: #ff5252;
+}
+
+.submit-btn {
+  background: #ff9900;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background: #e88a00;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.product-thumbnail {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.thumbnail-placeholder {
+  width: 50px;
+  height: 50px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 12px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.edit-btn {
+  background: #3498db;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #2980b9;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+.categories-select-container {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.selected-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.category-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e1ecf4;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.remove-category {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 4px;
+  padding: 0 2px;
+}
+
+.remove-category:hover {
+  color: #d32f2f;
+}
+
+.dropdown-with-add {
+  display: flex;
+  gap: 8px;
+}
+
+.category-dropdown {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.add-category-input {
+  display: flex;
+  gap: 4px;
+}
+
+.add-category-input input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 150px;
+}
+
+.add-category-input button {
+  padding: 8px 12px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-category-input button:hover {
+  background-color: #e0e0e0;
+}
+
+.add-category-input button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

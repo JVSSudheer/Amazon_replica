@@ -7,13 +7,12 @@ import api from "../../services/api";
 import { toast } from "react-toastify";
 
 const Navbar: React.FC = () => {
-
   const [showOptions, setShowOptions] = useState(false);
-  const {user} =useAuth();
-  const navigate=useNavigate();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const logout = async () => {
-    const response= await api.post("/auth/logout",{withCredentials:true});
+    const response = await api.post("/auth/logout", { withCredentials: true });
     if (response.status === 200) {
       console.log("Logout successful");
       localStorage.removeItem("token");
@@ -27,11 +26,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="logoContainer">
-        <img
-          src={amazon_logo}
-          alt="Amazon Logo"
-          className="logo"
-        />
+        <img src={amazon_logo} alt="Amazon Logo" className="logo" />
       </div>
       <div className="location">
         <span>Deliver to</span>
@@ -51,12 +46,11 @@ const Navbar: React.FC = () => {
           placeholder="Search Amazon.in"
           className="searchInput"
         />
-        <button className="searchButton">
-          🔍
-        </button>
+        <button className="searchButton">🔍</button>
       </div>
       <div className="navLinks">
-        <div className="navItem"
+        <div
+          className="navItem"
           onMouseEnter={() => setShowOptions(true)}
           onMouseLeave={() => setShowOptions(true)}
         >
@@ -67,11 +61,15 @@ const Navbar: React.FC = () => {
             <div className="dropdownOptions">
               {user.email ? (
                 <>
-                  <div className="logout_link" onClick={()=>logout()}>Sign Out</div>
+                  <div className="logout_link" onClick={() => logout()}>
+                    Sign Out
+                  </div>
                   <div className="account_link">Your Account</div>
                 </>
               ) : (
-                <Link to="/login" className="login_link">Sign In</Link>
+                <Link to="/login" className="login_link">
+                  Sign In
+                </Link>
               )}
             </div>
           )}
@@ -81,10 +79,12 @@ const Navbar: React.FC = () => {
           <br /> */}
           <strong>Orders</strong>
         </div>
-        <div className="cart">
-          <span className="cartCount">0</span>
-          🛒<span className="cartText">Cart</span>
-        </div>
+        <Link to="/cart">
+          <div className="cart">
+            <span className="cartCount">0</span>
+            🛒<span className="cartText">Cart</span>
+          </div>
+        </Link>
       </div>
     </nav>
   );

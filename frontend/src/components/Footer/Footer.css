@@ -3,7 +3,8 @@
   color: white;
   font-family: 'Amazon Ember', Arial, sans-serif;
   padding: 0;
-  font-size: 14px;
+  font-size: 14px;  
+  margin-top: auto;
 }
 
 .backToTop {

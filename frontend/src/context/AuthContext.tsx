@@ -54,15 +54,15 @@ export const AuthProvider=  ({ children }: AuthProviderProps)=> {
             setLoading(false);
         }
     };
+    const refetchUser = async () => {
+        await fetchUser();
+    };
 
     useEffect(() => {
         fetchUser();
         refetchUser();
-    }, []);
+    });
 
-    const refetchUser = async () => {
-        await fetchUser();
-    };
 
     return (
         <AuthContext.Provider value={{ user, loading, setUser, refetchUser }}>

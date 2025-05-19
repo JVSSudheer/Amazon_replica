@@ -1,0 +1,11 @@
+.products-page {
+  padding: 20px;
+  background-color: #f3f3f3;
+}
+
+.products-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
