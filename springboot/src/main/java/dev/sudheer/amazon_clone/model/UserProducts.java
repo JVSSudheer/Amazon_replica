@@ -30,7 +30,7 @@ public class UserProducts {
     }
 
     @Column(nullable=false)
-    private float cost;
+    private double cost;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable=false)
@@ -39,7 +39,7 @@ public class UserProducts {
     @Column()
     private String createdAt;
 
-    public UserProducts(User user, Product product, int quantity, float cost, String status) {
+    public UserProducts(User user, Product product, int quantity, double cost, String status) {
         this.user = user;
         this.product = product;
         this.quantity = quantity;

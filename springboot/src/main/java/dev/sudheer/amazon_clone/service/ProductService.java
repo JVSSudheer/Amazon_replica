@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -30,15 +31,14 @@ public class ProductService {
         try {
             // Upload image to Google Drive if provided
             String imageUrl = null;
-            if (StringUtils.hasText(productRequest.getImageBase64()) && 
-                StringUtils.hasText(productRequest.getImageName())) {
-                
+            if (StringUtils.hasText(productRequest.getImageBase64()) &&
+                    StringUtils.hasText(productRequest.getImageName())) {
+
                 try {
                     imageUrl = googleDriveService.uploadBase64File(
-                        productRequest.getImageBase64(),
-                        productRequest.getImageName(),
-                        productRequest.getImageMimeType()
-                    );
+                            productRequest.getImageBase64(),
+                            productRequest.getImageName(),
+                            productRequest.getImageMimeType());
                 } catch (IOException | GeneralSecurityException e) {
                     return ResponseEntity.internalServerError()
                             .body("Failed to upload product image: " + e.getMessage());
@@ -46,18 +46,17 @@ public class ProductService {
             }
 
             Product product = new Product(
-                productRequest.getTitle(),
-                imageUrl,
-                productRequest.getCategories(),
-                productRequest.getBrand(),
-                productRequest.getPrice(),
-                productRequest.getAttributes()
-            );
+                    productRequest.getTitle(),
+                    imageUrl,
+                    productRequest.getCategories(),
+                    productRequest.getBrand(),
+                    productRequest.getPrice(),
+                    productRequest.getAttributes());
 
             productRepository.save(product);
 
             return ResponseEntity.ok(product);
-            
+
         } catch (Exception e) {
             return ResponseEntity.internalServerError()
                     .body("Error creating product: " + e.getMessage());
@@ -76,15 +75,10 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<?> getProductById(String id) {
-        try {
-            Product product = productRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
-            return ResponseEntity.ok(product);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body("Error fetching product: " + e.getMessage());
-        }
+    public ResponseEntity<Product> getProductById(String id) {
+        Optional<Product> product = productRepository.findById(id);
+        return product.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     public ResponseEntity<?> getAllProducts() {
