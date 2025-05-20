@@ -1,9 +1,13 @@
 export interface Product {
-  id: number;
+  id: string;
   title: string;
+  categories: string[];
+  brand: string;
   price: number;
-  description: string;
-  image: string;
+  imageUrl: string;
+  quantity: number;
+  attributes: Map<string, string>;
+  createdAt: string;
 }
 
 export interface CartItem extends Product {

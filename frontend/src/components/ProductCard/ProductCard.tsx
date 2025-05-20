@@ -8,9 +8,10 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+  console.log("ProductCard", product.imageUrl);
   return (
     <div className="product-card">
-      <img src={product.image} alt={product.title} className="product-image" />
+      <img src={product.imageUrl} alt={product.title} className="product-image" />
       
       <div className="product-info">
         <h3 className="product-title">
@@ -26,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
         </div>
                 
         <div className="price-container">
-          <span className="current-price">₹{product.price}</span>
+          <span className="current-price">₹{Number(product.price).toFixed(2)}</span>
         </div>
         
         <div className="prime-delivery">

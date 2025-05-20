@@ -1,7 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./ProductsAdmin.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
+import {
+  addProduct,
+  deleteProduct,
+  getAllProducts
+} from "../../services/productService";
+import { toast } from "react-toastify";
 
 interface ProductAttribute {
   name: string;
@@ -14,12 +20,35 @@ interface Product {
   categories: string[];
   brand: string;
   price: number;
-  image: File | string | null;
+  image: File | null;
   attributes: ProductAttribute[];
 }
 
+interface Products {
+  id: string;
+  title: string;
+  categories: string[];
+  brand: string;
+  price: number;
+  image: string;
+  quantity: number;
+  attributes: Map<string, string>;
+  createdAt: string;
+}
+
 const ProductsAdmin: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Products[]>([]);
+  
+  const fetchProducts = async () => {
+      try {
+        const fetchedProducts = await getAllProducts();
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        toast.error("Error fetching products");
+      }
+    };
+
   const [currentProduct, setCurrentProduct] = useState<Product>({
     title: "",
     categories: [""],
@@ -28,7 +57,6 @@ const ProductsAdmin: React.FC = () => {
     image: null,
     attributes: [
       { name: "color", value: "" },
-      { name: "size", value: "" },
     ],
   });
   const [allCategories] = useState<string[]>([
@@ -40,7 +68,7 @@ const ProductsAdmin: React.FC = () => {
     "toys",
     "sports",
   ]);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [categoryInput, setCategoryInput] = useState("");
 
@@ -120,51 +148,85 @@ const ProductsAdmin: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  async function convertFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64String = (reader.result as string).split(",")[1];
+        resolve(base64String);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (editingId) {
-      // Update existing product
-      setProducts(
-        products.map((p) =>
-          p.id === editingId ? { ...currentProduct, id: editingId } : p
-        )
+    try {
+      const imageBase64 = await convertFileToBase64(
+        currentProduct.image as File
       );
-    } else {
-      // Add new product
-      const newProduct = {
-        ...currentProduct,
-        id: Date.now().toString(),
-      };
-      setProducts([...products, newProduct]);
+
+      const attributesObj = currentProduct.attributes.reduce((acc, attr) => {
+        if (attr.name) acc[attr.name] = attr.value;
+        return acc;
+      }, {} as Record<string, string>);
+
+      const attributesMap = new Map<string, string>(
+        Object.entries(attributesObj)
+      );
+      console.log("Attributes Map:", typeof attributesMap);
+      console.log("attributesObj:", typeof attributesObj);
+
+      await addProduct({
+        title: currentProduct.title,
+        imageName: currentProduct.image?.name || "",
+        imageMimeType: currentProduct.image?.type || "",
+        imageBase64: imageBase64,
+        categories: currentProduct.categories,
+        brand: currentProduct.brand,
+        price: currentProduct.price,
+        attributes: attributesObj,
+      });
+      fetchProducts();
+      toast.success("Product added successfully");
+      setCurrentProduct({
+        title: "",
+        categories: [""],
+        brand: "",
+        price: 0,
+        image: null,
+        attributes: [
+          { name: "color", value: "" },
+          { name: "size", value: "" },
+        ],
+      });
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (error) {
+      console.error("Error during adding product:", error);
+      toast.error("Error during adding product");
     }
+  };
 
-    // Reset form
-    setCurrentProduct({
-      title: "",
-      categories: [""],
-      brand: "",
-      price: 0,
-      image: null,
-      attributes: [
-        { name: "color", value: "" },
-        { name: "size", value: "" },
-      ],
-    });
-    setEditingId(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteProduct(id);
+      fetchProducts();
+      toast.success("Product deleted successfully");
+    } catch (error) {
+      console.error("Error during deleting product:", error);
+      toast.error("Error during deleting product");
     }
   };
 
-  const editProduct = (product: Product) => {
-    setCurrentProduct(product);
-    setEditingId(product.id || null);
-  };
-
-  const deleteProduct = (id: string) => {
-    setProducts(products.filter((p) => p.id !== id));
-  };
+  // const editProduct = (product: Product) => {
+  //   setCurrentProduct(product);
+  //   setEditingId(product.id || null);
+  // };
 
   const addDefaultAttribute = (attrName: string) => {
     const exists = currentProduct.attributes.some(
@@ -182,6 +244,10 @@ const ProductsAdmin: React.FC = () => {
       }
     }
   };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <>
@@ -399,14 +465,16 @@ const ProductsAdmin: React.FC = () => {
                   {products.map((product) => (
                     <tr key={product.id}>
                       <td>
-                        {product.image && typeof product.image === "string" ? (
+                        {product.image && (
                           <img
-                            src={product.image}
+                            src={
+                              typeof product.image === "string"
+                                ? product.image
+                                : product.image
+                            }
                             alt={product.title}
                             className="product-thumbnail"
                           />
-                        ) : (
-                          <div className="thumbnail-placeholder">No Image</div>
                         )}
                       </td>
                       <td>{product.title}</td>
@@ -414,16 +482,14 @@ const ProductsAdmin: React.FC = () => {
                       <td>{product.brand}</td>
                       <td>${product.price.toFixed(2)}</td>
                       <td>
-                        <button
+                        {/* <button
                           onClick={() => editProduct(product)}
                           className="edit-btn"
                         >
                           Edit
-                        </button>
+                        </button> */}
                         <button
-                          onClick={() =>
-                            product.id && deleteProduct(product.id)
-                          }
+                          onClick={() => product.id && handleDelete(product.id)}
                           className="delete-btn"
                         >
                           Delete

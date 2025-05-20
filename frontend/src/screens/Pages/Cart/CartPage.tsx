@@ -8,24 +8,29 @@ import Footer from "../../../components/Footer/Footer";
 const CartPage: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([
     {
-      id: 1,
+      id: "1",
       title: "boAt Rockerz 480 w/RGB LEDs, 6 Light Modes, 40mm Drivers, Beast Mode, 60hrs Playback, ENx Tech, BT v5.3, Adaptive Fit & Easy Access Controls, Bluetooth Headphones(Black Sabre)",
       price: 99.99,
-      description: "High-quality wireless headphones with noise cancellation",
-      image:
+      categories: ["Electronics", "Headphones"],
+      brand: "boAt",
+      attributes: new Map([
+        ["colour", "red"],
+      ]),
+      imageUrl:
         "https://m.media-amazon.com/images/I/61CGHv6kmWL._AC_UF1000,1000_QL80_.jpg",
       quantity: 1,
+      createdAt: new Date().toISOString(),
     },
   ]);
 
-  const [selectedItems, setSelectedItems] = useState<number[]>(cart.map(item => item.id));
+  const [selectedItems, setSelectedItems] = useState<string[]>(cart.map(item => item.id));
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
     setSelectedItems(prev => prev.filter(itemId => itemId !== id));
   };
 
-  const updateQuantity = (id: number, quantity: number) => {
+  const updateQuantity = (id: string, quantity: number) => {
     if (quantity < 1) return;
 
     setCart((prevCart) =>
@@ -33,7 +38,7 @@ const CartPage: React.FC = () => {
     );
   };
 
-  const toggleItemSelection = (id: number) => {
+  const toggleItemSelection = (id: string) => {
     setSelectedItems(prev => 
       prev.includes(id) 
         ? prev.filter(itemId => itemId !== id)

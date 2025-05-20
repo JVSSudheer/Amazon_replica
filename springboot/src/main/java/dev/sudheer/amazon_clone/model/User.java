@@ -1,5 +1,8 @@
 package dev.sudheer.amazon_clone.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +39,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserProducts> userProducts= new ArrayList<>();
 
     @Column(name = "createdAt", updatable = false)
     private String createdAt;
