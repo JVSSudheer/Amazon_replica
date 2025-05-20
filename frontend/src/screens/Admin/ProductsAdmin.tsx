@@ -20,7 +20,7 @@ interface Product {
   categories: string[];
   brand: string;
   price: number;
-  image: File | null;
+  imageUrl: string;
   attributes: ProductAttribute[];
 }
 
@@ -30,7 +30,7 @@ interface Products {
   categories: string[];
   brand: string;
   price: number;
-  image: string;
+  imageUrl: string;
   quantity: number;
   attributes: Map<string, string>;
   createdAt: string;
@@ -54,9 +54,9 @@ const ProductsAdmin: React.FC = () => {
     categories: [""],
     brand: "",
     price: 0,
-    image: null,
+    imageUrl: "",
     attributes: [
-      { name: "color", value: "" },
+      { name: "colour", value: "" },
     ],
   });
   const [allCategories] = useState<string[]>([
@@ -73,7 +73,7 @@ const ProductsAdmin: React.FC = () => {
   const [categoryInput, setCategoryInput] = useState("");
 
   const defaultAttributes = [
-    { name: "color", value: "" },
+    { name: "colour", value: "" },
     { name: "size", value: "" },
     { name: "weight", value: "" },
     { name: "material", value: "" },
@@ -89,15 +89,6 @@ const ProductsAdmin: React.FC = () => {
       ...currentProduct,
       [name]: name === "price" ? parseFloat(value) || 0 : value,
     });
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setCurrentProduct({
-        ...currentProduct,
-        image: e.target.files[0],
-      });
-    }
   };
 
   const handleAttributeChange = (
@@ -148,42 +139,40 @@ const ProductsAdmin: React.FC = () => {
     });
   };
 
-  async function convertFileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const base64String = (reader.result as string).split(",")[1];
-        resolve(base64String);
-      };
-      reader.onerror = (error) => reject(error);
-    });
-  }
+  // async function convertFileToBase64(file: File): Promise<string> {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => {
+  //       const base64String = (reader.result as string).split(",")[1];
+  //       resolve(base64String);
+  //     };
+  //     reader.onerror = (error) => reject(error);
+  //   });
+  // }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const imageBase64 = await convertFileToBase64(
-        currentProduct.image as File
-      );
+      // const imageBase64 = await convertFileToBase64(
+      //   currentProduct.image as File
+      // );
 
       const attributesObj = currentProduct.attributes.reduce((acc, attr) => {
         if (attr.name) acc[attr.name] = attr.value;
         return acc;
       }, {} as Record<string, string>);
 
-      const attributesMap = new Map<string, string>(
-        Object.entries(attributesObj)
-      );
-      console.log("Attributes Map:", typeof attributesMap);
-      console.log("attributesObj:", typeof attributesObj);
+      // console.log("Attributes Map:", typeof attributesMap);
+      // console.log("attributesObj:", typeof attributesObj);
 
       await addProduct({
         title: currentProduct.title,
-        imageName: currentProduct.image?.name || "",
-        imageMimeType: currentProduct.image?.type || "",
-        imageBase64: imageBase64,
+        // imageName: currentProduct.image?.name || "",
+        // imageMimeType: currentProduct.image?.type || "",
+        // imageBase64: imageBase64,
+        imageUrl: currentProduct.imageUrl,
         categories: currentProduct.categories,
         brand: currentProduct.brand,
         price: currentProduct.price,
@@ -196,12 +185,12 @@ const ProductsAdmin: React.FC = () => {
         categories: [""],
         brand: "",
         price: 0,
-        image: null,
+        imageUrl: "",
         attributes: [
-          { name: "color", value: "" },
-          { name: "size", value: "" },
+          { name: "colour", value: "" },
         ],
       });
+      setCategoryInput("");
 
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
@@ -272,20 +261,11 @@ const ProductsAdmin: React.FC = () => {
               <div className="form-group">
                 <label>Image:</label>
                 <input
-                  type="file"
-                  ref={fileInputRef}
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  required={!editingId}
-                />
-                {currentProduct.image &&
-                  typeof currentProduct.image === "string" && (
-                    <img
-                      src={currentProduct.image}
-                      alt="Preview"
-                      className="image-preview"
-                    />
-                  )}
+                    type="text"
+                    name="imageUrl"
+                    onChange={handleInputChange}
+                    required
+                  />
               </div>
 
               <div className="form-group">
@@ -368,7 +348,7 @@ const ProductsAdmin: React.FC = () => {
               </div>
 
               <div className="form-group">
-                <label>Price ($):</label>
+                <label>Price (₹):</label>
                 <input
                   type="number"
                   name="price"
@@ -465,12 +445,12 @@ const ProductsAdmin: React.FC = () => {
                   {products.map((product) => (
                     <tr key={product.id}>
                       <td>
-                        {product.image && (
+                        {product.imageUrl && (
                           <img
                             src={
-                              typeof product.image === "string"
-                                ? product.image
-                                : product.image
+                              typeof product.imageUrl === "string"
+                                ? product.imageUrl
+                                : ""
                             }
                             alt={product.title}
                             className="product-thumbnail"
@@ -480,7 +460,7 @@ const ProductsAdmin: React.FC = () => {
                       <td>{product.title}</td>
                       <td>{product.categories.join(", ")}</td>
                       <td>{product.brand}</td>
-                      <td>${product.price.toFixed(2)}</td>
+                      <td>₹{product.price.toFixed(2)}</td>
                       <td>
                         {/* <button
                           onClick={() => editProduct(product)}

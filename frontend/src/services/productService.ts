@@ -2,9 +2,10 @@ import api from "./api";
 
 interface Product{
     title: string;
-    imageName: string;
-    imageMimeType: string;
-    imageBase64: string;
+    // imageName: string;
+    // imageMimeType: string;
+    // imageBase64: string;
+    imageUrl: string;
     categories: string[];
     brand: string;
     price: number;
@@ -15,9 +16,10 @@ export const addProduct=async (product: Product) => {
     try{
         const response = await api.post("/products/add", {
             title: product.title,
-            imageName: product.imageName,
-            imageMimeType: product.imageMimeType,
-            imageBase64: product.imageBase64,
+            // imageName: product.imageName,
+            // imageMimeType: product.imageMimeType,
+            // imageBase64: product.imageBase64,
+            imageUrl: product.imageUrl,
             categories: product.categories,
             brand: product.brand,
             price: product.price,

@@ -8,9 +8,7 @@ import lombok.Data;
 public class ProductResponse {
     private String id;
     private String title;
-    private String imageName;
-    private String imageMimmeType;
-    private String imageBase64;
+    private String imageUrl;
     private String[] categories;
     private String brand;
     private float price;

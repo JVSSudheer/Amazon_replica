@@ -7,21 +7,17 @@ import lombok.Data;
 @Data
 public class ProductRequest {
     public String title;
-    public String imageName;
-    public String imageMimeType;
-    public String imageBase64;
+    public String imageUrl;
     public String[] categories;
     public String brand;
     public double price;
     public Map<String, String> attributes;
 
 
-    public ProductRequest(String title, String imageName, String imageMimeType, String imageBase64, String[] categories,
+    public ProductRequest(String title, String imageUrl, String[] categories,
         String brand, double price, Map<String, String> attributes) {
         this.title = title;
-        this.imageName = imageName;
-        this.imageMimeType = imageMimeType;
-        this.imageBase64 = imageBase64;
+        this.imageUrl = imageUrl;
         this.categories = categories;
         this.brand = brand;
         this.price = price;
