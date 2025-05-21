@@ -34,5 +34,6 @@ export const login = async (email: string, password: string) => {
 }
 
 export const logout = async () => {
+    
     localStorage.removeItem("token");
 }

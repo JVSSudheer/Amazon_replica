@@ -1,12 +1,13 @@
 import React from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
+import ProductsPage from "../Products/ProductsPage";
 
 const Home: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <h1>Welcome to the Home Page</h1>
+      <ProductsPage/>
       <Footer />
     </div>
   );

@@ -7,6 +7,7 @@ import dev.sudheer.amazon_clone.dto.request.ProductRequest;
 import dev.sudheer.amazon_clone.model.Product;
 import dev.sudheer.amazon_clone.repository.ProductRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,5 +62,14 @@ public class ProductService {
             return ResponseEntity.internalServerError()
                     .body("Error fetching products: " + e.getMessage());
         }
+    }
+
+    public List<Product> searchProducts(String query) {
+    return productRepository.findByTitleContainingIgnoreCase(query);
+}
+
+    
+    public List<Product> findByCategory(String category) {
+        return productRepository.findByCategoriesContainingIgnoreCase(category);
     }
 }

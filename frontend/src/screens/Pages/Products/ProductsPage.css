@@ -1,6 +1,9 @@
 .products-page {
   padding: 20px;
   background-color: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .products-grid {

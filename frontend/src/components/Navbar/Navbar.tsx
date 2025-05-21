@@ -10,6 +10,13 @@ const Navbar: React.FC = () => {
   const [showOptions, setShowOptions] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   const logout = async () => {
     const response = await api.post("/auth/logout", { withCredentials: true });
@@ -45,8 +52,13 @@ const Navbar: React.FC = () => {
           type="text"
           placeholder="Search Amazon.in"
           className="searchInput"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyUp={(e) => e.key === "Enter" && handleSearch()}
         />
-        <button className="searchButton">🔍</button>
+        <button className="searchButton" onClick={handleSearch}>
+          🔍
+        </button>
       </div>
       <div className="navLinks">
         <div

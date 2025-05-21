@@ -8,7 +8,6 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
-  console.log("ProductCard", product.imageUrl);
   return (
     <div className="product-card">
       <img src={product.imageUrl} alt={product.title} className="product-image" />

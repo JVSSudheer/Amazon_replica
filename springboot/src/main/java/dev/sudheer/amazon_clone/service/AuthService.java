@@ -45,13 +45,14 @@ public class AuthService {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(true) 
+                .secure(false) 
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60) 
                 .sameSite("Lax") 
+                .domain("http://localhost:3000")
                 .build();
 
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok(new JwtResponse(token));
 

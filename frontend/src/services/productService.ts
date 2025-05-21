@@ -62,3 +62,8 @@ export const getProductById = async (id: string) => {
         throw error;
     }
 };
+
+export const searchProducts = async (query: string): Promise<Product[]> => {
+  const response = await api.get(`/products/search?query=${encodeURIComponent(query)}`);
+  return response.data;
+};
