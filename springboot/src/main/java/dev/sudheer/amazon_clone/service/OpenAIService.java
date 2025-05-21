@@ -1,6 +1,7 @@
 package dev.sudheer.amazon_clone.service;
 
 import java.util.Base64;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -9,10 +10,11 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Service
 public class OpenAIService {
@@ -28,7 +30,7 @@ public class OpenAIService {
         }
 
         String prompt = "Analyze this product image and respond with ONLY the most relevant product category " +
-                      "from these options: Mobile, watches, headphones. " +
+                      "from these options: Mobile, watch, headeset. " +
                       "Just return the single most relevant category name, nothing else.";
 
         CloseableHttpClient client = HttpClients.createDefault();
@@ -37,29 +39,24 @@ public class OpenAIService {
         post.setHeader("Content-Type", "application/json");
 
         ObjectMapper mapper = new ObjectMapper();
-        ObjectNode requestBody = mapper.createObjectNode();
         
-        // Create messages array (ArrayNode)
+        // Create messages array
         ArrayNode messagesArray = mapper.createArrayNode();
         
-        // Create message object (ObjectNode)
-        ObjectNode message = mapper.createObjectNode();
-        message.put("role", "user");
-        
-        // Create content array (ArrayNode)
+        // Create content array
         ArrayNode contentArray = mapper.createArrayNode();
         
-        // Add text prompt (ObjectNode)
+        // Add text prompt
         ObjectNode textContent = mapper.createObjectNode();
         textContent.put("type", "text");
         textContent.put("text", prompt);
         contentArray.add(textContent);
         
-        // Add image content (ObjectNode)
+        // Add image content 
         ObjectNode imageContent = mapper.createObjectNode();
         imageContent.put("type", "image_url");
         
-        // Create image_url object (ObjectNode)
+        // Create image_url object
         ObjectNode imageUrlObject = mapper.createObjectNode();
         
         if (imageBytes != null) {
@@ -73,9 +70,16 @@ public class OpenAIService {
         
         imageContent.set("image_url", imageUrlObject);
         contentArray.add(imageContent);
+
+        // Create message object 
+        ObjectNode message = mapper.createObjectNode();
+        message.put("role", "user");
         
         message.set("content", contentArray);
         messagesArray.add(message);
+
+        ObjectNode requestBody = mapper.createObjectNode();
+
         requestBody.set("messages", messagesArray);
         requestBody.put("model", VISION_MODEL);
         requestBody.put("max_tokens", 300);
@@ -85,7 +89,7 @@ public class OpenAIService {
 
         try (CloseableHttpResponse response = client.execute(post)) {
             String responseBody = EntityUtils.toString(response.getEntity());
-            System.out.println("Raw API Response: " + responseBody);
+            // System.out.println("Raw API Response: " + responseBody);
             
             JsonNode responseJson = mapper.readTree(responseBody);
             
@@ -104,7 +108,7 @@ public class OpenAIService {
                 
             System.out.println("Extracted Category: " + category);
             
-            if (!category.matches("mobile|watches|headphones")) {
+            if (!category.matches("mobile|watch|headset")) {
                 throw new RuntimeException("Unexpected category: " + category);
             }
             
@@ -112,3 +116,25 @@ public class OpenAIService {
         }
     }
 }
+
+// {
+//   "messages": [
+//     {
+//       "role": "user",
+//       "content": [
+//         {
+//           "type": "text",
+//           "text": "Analyze this product image..."
+//         },
+//         {
+//           "type": "image_url",
+//           "image_url": {
+//             "url": "data:image/jpeg;base64,..."
+//           }
+//         }
+//       ]
+//     }
+//   ],
+//   "model": "gpt-4-turbo",
+//   ...
+// }

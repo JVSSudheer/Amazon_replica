@@ -30,14 +30,16 @@ public class ProductCategoryController {
             @RequestParam(value = "imageUrl", required = false) String imageUrl) {
         
         try {
-            System.out.println("Image URL: " + imageUrl);
             String category = openAIService.analyzeImageCategory(
                 imageFile != null ? imageFile.getBytes() : null, 
                 imageUrl
             );
+
+            System.out.println("Category: " + category);
             
             return ResponseEntity.ok(Map.of("category", category));
         } catch (Exception e) {
+            System.err.println("Error analyzing image: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }

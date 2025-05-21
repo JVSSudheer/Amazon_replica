@@ -44,7 +44,6 @@ const CategoryBasedSimilarProducts = () => {
         formData.append("imageUrl", imageUrl);
       }
 
-      console.log("FormData:", formData);
 
       // Step 2: Get category from image analysis
       const analysisResponse = await axios.post(
