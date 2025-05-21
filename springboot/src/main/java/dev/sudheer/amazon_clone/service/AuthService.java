@@ -49,7 +49,7 @@ public class AuthService {
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60) 
                 .sameSite("Lax") 
-                .domain("http://localhost:3000")
+                // .domain("http://localhost:3000")
                 .build();
 
         response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());

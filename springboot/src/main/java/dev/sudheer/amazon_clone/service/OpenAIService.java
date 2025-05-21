@@ -34,6 +34,7 @@ public class OpenAIService {
                       "Just return the single most relevant category name, nothing else.";
 
         CloseableHttpClient client = HttpClients.createDefault();
+        
         HttpPost post = new HttpPost("https://api.openai.com/v1/chat/completions");
         post.setHeader("Authorization", "Bearer " + apiKey);
         post.setHeader("Content-Type", "application/json");
